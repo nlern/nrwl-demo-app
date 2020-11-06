@@ -1,4 +1,29 @@
-<input #username placeholder="username" type="text"/>
-<input #password placeholder="password" type="text"/>
-
-<button (click)="login({username:username.value, password:password.value})">Login</button>
+<mat-card>
+  <form>
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div fxLayout="column" fxLayoutAlign="center none">
+        <mat-form-field>
+          <input matInput #username placeholder="username" type="text" />
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput #password placeholder="password" type="text" />
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <div fxLayout="row" fxLayoutAlign="end none">
+        <button
+          type="button"
+          mat-raised-button
+          color="primary"
+          (click)="login({ username: username.value, password: password.value })"
+        >
+          Login
+        </button>
+      </div>
+    </mat-card-actions>
+  </form>
+</mat-card>
