@@ -6,9 +6,6 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
-        },
-        "@nrwl/schematics:component": {
-          "styleext": "scss"
         }
       },
       "root": "apps/customer-portal",
@@ -278,6 +275,9 @@
     },
     "@nrwl/angular:library": {
       "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
     }
   },
   "defaultProject": "customer-portal"
