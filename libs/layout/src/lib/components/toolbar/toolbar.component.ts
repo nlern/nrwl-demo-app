@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { User } from '@demo-app/data-models';
 
 @Component({
@@ -9,4 +15,9 @@ import { User } from '@demo-app/data-models';
 })
 export class ToolbarComponent {
   @Input() user: User;
+  @Output() logout: EventEmitter<void> = new EventEmitter();
+
+  onLogoutClick() {
+    this.logout.emit();
+  }
 }
