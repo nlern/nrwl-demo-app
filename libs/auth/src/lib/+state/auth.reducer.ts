@@ -7,9 +7,8 @@ import * as AuthActions from './auth.actions';
 export const AUTH_FEATURE_KEY = 'auth';
 
 export interface State {
-  selectedId?: string | number; // which Auth record has been selected
   loaded: boolean; // has the Auth list been loaded
-  user?: User; // logged in user info
+  user: User; // logged in user info
   error?: string | null; // last known error (if any)
 }
 
@@ -20,6 +19,7 @@ export interface AuthPartialState {
 export const initialState: State = {
   // set initial required properties
   loaded: false,
+  user: null,
 };
 
 const authReducer = createReducer(
@@ -34,7 +34,12 @@ const authReducer = createReducer(
     loaded: true,
     user,
   })),
-  on(AuthActions.LoginFailure, (state, { error }) => ({ ...state, error }))
+  on(AuthActions.LoginFailure, (state, { error }) => ({
+    ...state,
+    error,
+    user: null,
+    loaded: false,
+  }))
 );
 
 export function reducer(state: State | undefined, action: Action) {
