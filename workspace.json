@@ -6,6 +6,9 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
+        },
+        "@nrwl/schematics:component": {
+          "styleext": "scss"
         }
       },
       "root": "apps/customer-portal",

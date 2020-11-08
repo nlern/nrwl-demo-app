@@ -16,6 +16,7 @@ import { AppComponent } from './app.component';
 
     RouterModule.forRoot(
       [
+        { path: '', pathMatch: 'full', redirectTo: 'products' },
         { path: 'auth', children: authRoutes },
         {
           path: 'products',
