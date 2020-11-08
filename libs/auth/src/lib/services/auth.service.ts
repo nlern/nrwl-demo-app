@@ -11,11 +11,21 @@ export class AuthService {
   private userSubject$ = new BehaviorSubject<User>(null);
   user$ = this.userSubject$.asObservable();
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.userSubject$.next(JSON.parse(user));
+    }
+  }
 
   login(authenticate: Authenticate): Observable<any> {
     return this.httpClient
       .post<User>('http://localhost:3000/login', authenticate)
-      .pipe(tap((user: User) => this.userSubject$.next(user)));
+      .pipe(
+        tap((user: User) => {
+          this.userSubject$.next(user);
+          localStorage.setItem('user', JSON.stringify(user));
+        })
+      );
   }
 }
