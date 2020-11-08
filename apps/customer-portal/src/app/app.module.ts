@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { authRoutes, AuthModule } from '@demo-app/auth';
+import { LayoutModule } from '@demo-app/layout';
 
 import { AppComponent } from './app.component';
 
@@ -12,11 +13,12 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    
+
     RouterModule.forRoot([{ path: 'auth', children: authRoutes }], {
       initialNavigation: 'enabled',
     }),
     AuthModule,
+    LayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
