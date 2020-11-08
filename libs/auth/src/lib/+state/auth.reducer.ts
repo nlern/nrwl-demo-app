@@ -1,14 +1,12 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import { User } from '@demo-app/data-models';
 
 import * as AuthActions from './auth.actions';
-import { AuthEntity } from './auth.models';
 
 export const AUTH_FEATURE_KEY = 'auth';
 
-export interface State extends EntityState<AuthEntity> {
+export interface State {
   selectedId?: string | number; // which Auth record has been selected
   loaded: boolean; // has the Auth list been loaded
   user?: User; // logged in user info
@@ -19,14 +17,10 @@ export interface AuthPartialState {
   readonly [AUTH_FEATURE_KEY]: State;
 }
 
-export const authAdapter: EntityAdapter<AuthEntity> = createEntityAdapter<
-  AuthEntity
->();
-
-export const initialState: State = authAdapter.getInitialState({
+export const initialState: State = {
   // set initial required properties
   loaded: false,
-});
+};
 
 const authReducer = createReducer(
   initialState,
@@ -35,9 +29,11 @@ const authReducer = createReducer(
     loaded: false,
     error: null,
   })),
-  on(AuthActions.LoginSuccess, (state, { auth }) =>
-    authAdapter.setAll(auth, { ...state, loaded: true })
-  ),
+  on(AuthActions.LoginSuccess, (state, { user }) => ({
+    ...state,
+    loaded: true,
+    user,
+  })),
   on(AuthActions.LoginFailure, (state, { error }) => ({ ...state, error }))
 );
 

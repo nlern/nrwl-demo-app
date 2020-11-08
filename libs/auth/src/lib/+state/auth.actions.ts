@@ -1,5 +1,5 @@
+import { Authenticate, User } from '@demo-app/data-models';
 import { createAction, props } from '@ngrx/store';
-import { AuthEntity } from './auth.models';
 
 export enum AuthActionTypes {
   Login = '[Auth Page] Login',
@@ -7,11 +7,14 @@ export enum AuthActionTypes {
   LoginFail = '[Auth API] Login Fail',
 }
 
-export const Login = createAction(AuthActionTypes.Login);
+export const Login = createAction(
+  AuthActionTypes.Login,
+  props<{ payload: Authenticate }>()
+);
 
 export const LoginSuccess = createAction(
   AuthActionTypes.LoginSuccess,
-  props<{ auth: AuthEntity[] }>()
+  props<{ user: User }>()
 );
 
 export const LoginFailure = createAction(
