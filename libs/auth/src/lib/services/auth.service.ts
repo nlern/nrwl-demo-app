@@ -13,9 +13,9 @@ export class AuthService {
   user$ = this.userSubject$.asObservable();
 
   constructor(private httpClient: HttpClient, private router: Router) {
-    const user = localStorage.getItem('user');
+    const user = this.getUser();
     if (user) {
-      this.userSubject$.next(JSON.parse(user));
+      this.userSubject$.next(user);
     }
   }
 
@@ -24,8 +24,7 @@ export class AuthService {
       .post<User>('http://localhost:3000/login', authenticate)
       .pipe(
         tap((user: User) => {
-          this.userSubject$.next(user);
-          localStorage.setItem('user', JSON.stringify(user));
+          this.setUser(user);
           this.router.navigate(['']);
         })
       );
@@ -33,13 +32,40 @@ export class AuthService {
 
   logout() {
     try {
-      this.userSubject$.next(null);
-      localStorage.removeItem('user');
+      this.removeUser();
       this.router.navigate(['/auth/login']);
       return of(true);
     } catch (error) {
       console.error('Unable to logout: ', error);
       return of(false);
     }
+  }
+
+  getUser(): User {
+    return JSON.parse(localStorage.getItem('user'));
+  }
+
+  getToken(): string {
+    return localStorage.getItem('token');
+  }
+
+  private setUser(user: User) {
+    this.userSubject$.next(user);
+    localStorage.setItem('user', JSON.stringify(user));
+    this.setToken(user.token);
+  }
+
+  private removeUser() {
+    this.userSubject$.next(null);
+    localStorage.removeItem('user');
+    this.removeToken();
+  }
+
+  private setToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  private removeToken() {
+    localStorage.removeItem('token');
   }
 }
