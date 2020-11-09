@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
 import { Authenticate, User } from '@demo-app/data-models';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,12 +12,7 @@ export class AuthService {
   private userSubject$ = new BehaviorSubject<User>(null);
   user$ = this.userSubject$.asObservable();
 
-  constructor(private httpClient: HttpClient, private router: Router) {
-    const user = this.getUser();
-    if (user) {
-      this.userSubject$.next(user);
-    }
-  }
+  constructor(private httpClient: HttpClient) {}
 
   login(authenticate: Authenticate): Observable<User> {
     return this.httpClient
@@ -25,7 +20,6 @@ export class AuthService {
       .pipe(
         tap((user: User) => {
           this.setUser(user);
-          this.router.navigate(['']);
         })
       );
   }
@@ -33,7 +27,6 @@ export class AuthService {
   logout() {
     try {
       this.removeUser();
-      this.router.navigate(['/auth/login']);
       return of(true);
     } catch (error) {
       console.error('Unable to logout: ', error);

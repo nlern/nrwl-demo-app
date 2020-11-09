@@ -1,5 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { Store } from '@ngrx/store';
+
+import { Authenticate } from '@demo-app/data-models';
+
+import { AuthPartialState } from '../../+state/auth.reducer';
+import * as authActions from '../../+state/auth.actions';
 
 @Component({
   selector: 'demo-app-login',
@@ -8,11 +13,11 @@ import { AuthService } from '../../services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
-  constructor(private authService: AuthService) {}
+  constructor(private store: Store<AuthPartialState>) {}
 
   ngOnInit(): void {}
 
-  login(authenticate: any): void {
-    this.authService.login(authenticate).subscribe();
+  login(authenticate: Authenticate): void {
+    this.store.dispatch(authActions.Login({ payload: authenticate }));
   }
 }

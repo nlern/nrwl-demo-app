@@ -8,14 +8,18 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+
 import { User } from '@demo-app/data-models';
-import { AuthService } from '../../services/auth.service';
+
+import { AuthPartialState } from '../../+state/auth.reducer';
+import { getAuthUser } from '../../+state/auth.selectors';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private store: Store<AuthPartialState>) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -25,7 +29,8 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.authService.user$.pipe(
+    return this.store.pipe(
+      select(getAuthUser),
       map((user: User) => {
         if (user) {
           return true;

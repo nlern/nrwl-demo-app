@@ -4,7 +4,8 @@ import { fetch } from '@nrwl/angular';
 
 import * as AuthActions from './auth.actions';
 import { AuthService } from '../services/auth.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
@@ -26,5 +27,18 @@ export class AuthEffects {
     )
   );
 
-  constructor(private actions$: Actions, private authService: AuthService) {}
+  navigateToProfile$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.LoginSuccess),
+        tap(() => this.router.navigate(['/products']))
+      ),
+    { dispatch: false }
+  );
+
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 }
