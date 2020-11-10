@@ -1,26 +1,19 @@
 import { Authenticate, User } from '@demo-app/data-models';
 import { createAction, props } from '@ngrx/store';
 
-export enum AuthActionTypes {
-  Login = '[Auth Page] Login',
-  LoginSuccess = '[Auth API] Login Success',
-  LoginFail = '[Auth API] Login Fail',
-  Logout = '[Layout Component] Logout'
-}
-
 export const Login = createAction(
-  AuthActionTypes.Login,
+  '[Auth Page] Login',
   props<{ payload: Authenticate }>()
 );
 
 export const LoginSuccess = createAction(
-  AuthActionTypes.LoginSuccess,
+  '[Auth API] Login Success',
   props<{ user: User }>()
 );
 
 export const LoginFailure = createAction(
-  AuthActionTypes.LoginFail,
+  '[Auth API] Login Fail',
   props<{ error: any }>()
 );
 
-export const Logout = createAction(AuthActionTypes.Logout);
+export const Logout = createAction('[Layout Component] Logout');
