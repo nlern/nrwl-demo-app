@@ -9,9 +9,11 @@ import { Observable } from 'rxjs';
 export class ProductsService {
   constructor(private httpClient: HttpClient) {}
 
-  getProducts(): Observable<ProductsEntity[]> {
-    return this.httpClient.get<ProductsEntity[]>(
-      'http://localhost:3000/products'
-    );
+  getProducts(category = null): Observable<ProductsEntity[]> {
+    const url =
+      category !== null
+        ? `http://localhost:3000/products?category=${category}`
+        : 'http://localhost:3000/products';
+    return this.httpClient.get<ProductsEntity[]>(url);
   }
 }

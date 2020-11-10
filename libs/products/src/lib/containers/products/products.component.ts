@@ -5,6 +5,7 @@ import { select, Store } from '@ngrx/store';
 import { ProductsPartialState } from '../../+state/products.reducer';
 import { getAllProducts } from '../../+state/products.selectors';
 import { loadProducts } from '../../+state/products.actions';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'demo-app-products',
@@ -14,10 +15,22 @@ import { loadProducts } from '../../+state/products.actions';
 export class ProductsComponent implements OnInit {
   products$: Observable<ProductsEntity[]>;
 
-  constructor(private store: Store<ProductsPartialState>) {}
+  constructor(
+    private store: Store<ProductsPartialState>,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.products$ = this.store.pipe(select(getAllProducts));
     this.store.dispatch(loadProducts());
+  }
+
+  updateUrlFilters(category: string): void {
+    const navigationExtras: NavigationExtras = {
+      replaceUrl: true,
+      queryParams: { category },
+    };
+
+    this.router.navigate(['/products'], navigationExtras);
   }
 }
