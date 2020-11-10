@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { fetch } from '@nrwl/angular';
+import { map } from 'rxjs/operators';
 
-import * as fromProducts from './products.reducer';
 import * as ProductsActions from './products.actions';
+import { ProductsService } from '../services/products/products.service';
 
 @Injectable()
 export class ProductsEffects {
@@ -12,8 +13,13 @@ export class ProductsEffects {
       ofType(ProductsActions.loadProducts),
       fetch({
         run: (action) => {
-          // Your custom service 'load' logic goes here. For now just return a success action...
-          return ProductsActions.loadProductsSuccess({ products: [] });
+          return this.productsService
+            .getProducts()
+            .pipe(
+              map((products) =>
+                ProductsActions.loadProductsSuccess({ products })
+              )
+            );
         },
 
         onError: (action, error) => {
@@ -24,5 +30,8 @@ export class ProductsEffects {
     )
   );
 
-  constructor(private actions$: Actions) {}
+  constructor(
+    private actions$: Actions,
+    private productsService: ProductsService
+  ) {}
 }
