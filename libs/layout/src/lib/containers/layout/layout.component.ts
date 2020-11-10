@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '@demo-app/data-models';
-import { AuthPartialState, getAuthUser } from '@demo-app/auth';
 import { Store } from '@ngrx/store';
+import { User } from '@demo-app/data-models';
+import { AuthPartialState, getAuthUser, Logout } from '@demo-app/auth';
 
 @Component({
   selector: 'app-layout',
@@ -19,6 +19,6 @@ export class LayoutComponent implements OnInit {
   }
 
   logout() {
-    // this.authService.logout();
+    this.store.dispatch(Logout());
   }
 }

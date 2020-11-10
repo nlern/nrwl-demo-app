@@ -7,7 +7,7 @@ import * as AuthActions from './auth.actions';
 export const AUTH_FEATURE_KEY = 'auth';
 
 export interface State {
-  loaded: boolean; // has the Auth list been loaded
+  loaded: boolean; // has the user info been loaded
   user: User; // logged in user info
   error?: string | null; // last known error (if any)
 }
@@ -39,6 +39,10 @@ const authReducer = createReducer(
     error,
     user: null,
     loaded: false,
+  })),
+  on(AuthActions.Logout, (state) => ({
+    ...state,
+    user: null,
   }))
 );
 
