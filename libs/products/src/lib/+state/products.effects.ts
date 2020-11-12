@@ -11,28 +11,6 @@ import { of } from 'rxjs';
 
 @Injectable()
 export class ProductsEffects {
-  loadProducts$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ProductsActions.loadProducts),
-      fetch({
-        run: (action) => {
-          return this.productsService
-            .getProducts()
-            .pipe(
-              map((products) =>
-                ProductsActions.loadProductsSuccess({ products })
-              )
-            );
-        },
-
-        onError: (action, error) => {
-          console.error('Error', error);
-          return ProductsActions.loadProductsFailure({ error });
-        },
-      })
-    )
-  );
-
   loadFilteredProducts$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ROUTER_NAVIGATION),

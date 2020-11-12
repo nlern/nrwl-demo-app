@@ -1,6 +1,7 @@
 <mat-card>
   <mat-form-field>
     <mat-select
+      [value]="selected"
       placeholder="Category"
       (selectionChange)="OnFilter($event.value)"
     >

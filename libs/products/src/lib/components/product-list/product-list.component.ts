@@ -15,6 +15,7 @@ import { ProductsEntity } from '@demo-app/data-models';
 })
 export class ProductListComponent {
   @Input() products: ProductsEntity[];
+  @Input() selected: string;
   @Output() filter = new EventEmitter<string>();
 
   OnFilter(category: string) {

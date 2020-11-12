@@ -5,7 +5,8 @@ import { select, Store } from '@ngrx/store';
 import { ProductsPartialState } from '../../+state/products.reducer';
 import { getAllProducts } from '../../+state/products.selectors';
 import { loadProducts } from '../../+state/products.actions';
-import { NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'demo-app-products',
@@ -14,15 +15,19 @@ import { NavigationExtras, Router } from '@angular/router';
 })
 export class ProductsComponent implements OnInit {
   products$: Observable<ProductsEntity[]>;
+  selectedCategory$: Observable<string>;
 
   constructor(
     private store: Store<ProductsPartialState>,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.products$ = this.store.pipe(select(getAllProducts));
-    this.store.dispatch(loadProducts());
+    this.selectedCategory$ = this.activatedRoute.queryParams.pipe(
+      map((queryParams) => queryParams['category'])
+    );
   }
 
   updateUrlFilters(category: string): void {

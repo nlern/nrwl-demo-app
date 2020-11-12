@@ -31,7 +31,12 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.LoginSuccess),
-        tap(() => this.router.navigate(['/products']))
+        map((action) => action.redirectTo),
+        tap((redirectUrl) =>
+          redirectUrl
+            ? this.router.navigateByUrl(redirectUrl)
+            : this.router.navigate(['/products'])
+        )
       ),
     { dispatch: false }
   );
